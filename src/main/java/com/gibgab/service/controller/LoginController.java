@@ -7,7 +7,7 @@ import com.gibgab.service.database.User;
 import com.gibgab.service.database.UserRepository;
 
 @RestController
-public class RegistrationController {
+public class LoginController {
 
     @Autowired
     private Environment env;
@@ -20,29 +20,22 @@ public class RegistrationController {
         String password;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/login")
     public @ResponseBody String register(@RequestBody UserInfo user_info){
         if (user_info.email.equals("") || user_info.password.equals(""))
             return "Missing details";
 
-        if(user_info.email.matches(".*@.*.edu")) {
-            if (userRepository.findByEmail(user_info.email) != null)
-                return "User already exists";
-            else {
-                User new_user = new User();
-                new_user.setEmail(user_info.email);
-                new_user.updatePassword(user_info.password);
+        User user = userRepository.findByEmail(user_info.email);
 
-                userRepository.save(new_user);
-                return "Created";
-            }
+        if (user == null) {
+            return "Invalid Login";
         }
-        else
-            return "Bad";
-    }
 
-    @RequestMapping("/test")
-    public String index(){
-        return "I'm alive";
+        if (user.verifyPassword(user_info.password)) {
+            return "you'll get a jwt eventually";
+        }
+        else {
+            return "Invalid Login";
+        }
     }
 }
