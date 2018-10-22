@@ -5,6 +5,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 import com.gibgab.service.database.User;
 import com.gibgab.service.database.UserRepository;
+import lombok.*;
 
 @RestController
 public class LoginController {
@@ -15,6 +16,7 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
+    @Data
     private class UserInfo {
         String email;
         String password;
@@ -22,7 +24,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public @ResponseBody String register(@RequestBody UserInfo user_info){
-        if (user_info.email.equals("") || user_info.password.equals(""))
+        if (user_info.getEmail().equals("") || user_info.getPassword().equals(""))
             return "Missing details";
 
         User user = userRepository.findByEmail(user_info.email);

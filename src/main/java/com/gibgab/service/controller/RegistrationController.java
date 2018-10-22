@@ -5,6 +5,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 import com.gibgab.service.database.User;
 import com.gibgab.service.database.UserRepository;
+import lombok.*;
 
 @RestController
 public class RegistrationController {
@@ -15,6 +16,7 @@ public class RegistrationController {
     @Autowired
     private UserRepository userRepository;
 
+    @Data
     private class UserInfo {
         String email;
         String password;
@@ -22,16 +24,16 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public @ResponseBody String register(@RequestBody UserInfo user_info){
-        if (user_info.email.equals("") || user_info.password.equals(""))
+        if (user_info.getEmail().equals("") || user_info.getPassword().equals(""))
             return "Missing details";
 
-        if(user_info.email.matches(".*@.*.edu")) {
-            if (userRepository.findByEmail(user_info.email) != null)
+        if(user_info.getEmail().matches(".*@.*.edu")) {
+            if (userRepository.findByEmail(user_info.getEmail()) != null)
                 return "User already exists";
             else {
                 User new_user = new User();
-                new_user.setEmail(user_info.email);
-                new_user.updatePassword(user_info.password);
+                new_user.setEmail(user_info.getEmail());
+                new_user.updatePassword(user_info.getPassword());
 
                 userRepository.save(new_user);
                 return "Created";
