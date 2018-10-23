@@ -1,0 +1,10 @@
+branch-defaults:
+  master:
+    environment: Gibgab-env
+global:
+  application_name: GibGab
+  default_platform: Java 8 running on 64bit Amazon Linux/2.7.5
+  default_region: us-east-1
+  sc: git
+deploy:
+  artifact: build/libs/gibgab-service-0.0.1-SNAPSHOT.jar
