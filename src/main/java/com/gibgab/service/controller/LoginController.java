@@ -17,7 +17,7 @@ public class LoginController {
     private UserRepository userRepository;
 
     @Data
-    private class UserInfo {
+    private static class UserInfo {
         String email;
         String password;
     }

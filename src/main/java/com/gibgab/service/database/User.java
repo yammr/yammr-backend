@@ -21,6 +21,7 @@ public class User {
     @Setter
     private String email;
 
+    @Getter
     private String password_hash;
 
 

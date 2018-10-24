@@ -1,11 +1,11 @@
 package com.gibgab.service.controller;
 
+import com.gibgab.service.database.User;
+import com.gibgab.service.database.UserRepository;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
-import com.gibgab.service.database.User;
-import com.gibgab.service.database.UserRepository;
-import lombok.*;
 
 @RestController
 public class RegistrationController {
@@ -17,7 +17,7 @@ public class RegistrationController {
     private UserRepository userRepository;
 
     @Data
-    private class UserInfo {
+    private static class UserInfo {
         String email;
         String password;
     }
