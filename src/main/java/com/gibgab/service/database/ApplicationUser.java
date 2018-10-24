@@ -8,9 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import lombok.*;
 
 @Entity
-public class User {
+public class ApplicationUser {
 
-    public User() {}
+    public ApplicationUser() {}
 
     @Getter
     @Id
@@ -22,14 +22,14 @@ public class User {
     private String email;
 
     @Getter
-    private String password_hash;
+    private String password;
 
 
     public void updatePassword(String password) {
-        password_hash = BCrypt.hashpw(password, BCrypt.gensalt());
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
     public boolean verifyPassword(String password) {
-        return BCrypt.checkpw(password, password_hash);
+        return BCrypt.checkpw(password, this.password);
     }
 }

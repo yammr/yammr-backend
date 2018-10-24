@@ -1,13 +1,14 @@
 package com.gibgab.service.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibgab.service.database.User;
+import com.gibgab.service.database.ApplicationUser;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -28,13 +29,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse res) throws AuthenticationException {
         try {
-            User user = new ObjectMapper()
-                    .readValue(request.getInputStream(), User.class);
+            ApplicationUser applicationUser = new ObjectMapper()
+                    .readValue(request.getInputStream(), ApplicationUser.class);
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            user.getEmail(),
-                            user.getPassword_hash(),
+                            applicationUser.getEmail(),
+                            applicationUser.getPassword(),
                             new ArrayList<>())
             );
         } catch (IOException e) {
@@ -48,7 +49,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             Authentication auth) throws IOException, ServletException {
 
         String token = Jwts.builder()
-                .setSubject(((User) auth.getPrincipal()).getEmail())
+                .setSubject(((User) auth.getPrincipal()).getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SIGNATURE_ALGORITHM, SECRET)
                 .compact();
