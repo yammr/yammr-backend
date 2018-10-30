@@ -6,7 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import lombok.*;
 
 @Entity
-@Table(name="User")
+@Table(name="user")
 public class ApplicationUser {
 
     public ApplicationUser() {}
@@ -14,6 +14,7 @@ public class ApplicationUser {
     @Getter
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="pk_user_id")
     private Integer id;
 
     @Getter
@@ -24,6 +25,15 @@ public class ApplicationUser {
     @Getter
     @Column(name="password_hash")
     private String password;
+
+    @Column(name="username")
+    private String username;
+
+    @Column(name="is_moderator")
+    private byte moderator;
+
+    @Column(name="fk_campus_id")
+    private int campusId = 0;
 
 
     public void updatePassword(String password) {
