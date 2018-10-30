@@ -1,13 +1,12 @@
 package com.gibgab.service.database;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import lombok.*;
 
 @Entity
+@Table(name="User")
 public class ApplicationUser {
 
     public ApplicationUser() {}
@@ -19,9 +18,11 @@ public class ApplicationUser {
 
     @Getter
     @Setter
+    @Column(name="email")
     private String email;
 
     @Getter
+    @Column(name="password_hash")
     private String password;
 
 
