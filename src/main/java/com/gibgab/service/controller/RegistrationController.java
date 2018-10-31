@@ -1,11 +1,11 @@
 package com.gibgab.service.controller;
 
+import com.gibgab.service.database.ApplicationUser;
+import com.gibgab.service.database.UserRepository;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
-import com.gibgab.service.database.User;
-import com.gibgab.service.database.UserRepository;
-import lombok.*;
 
 @RestController
 public class RegistrationController {
@@ -17,7 +17,7 @@ public class RegistrationController {
     private UserRepository userRepository;
 
     @Data
-    private class UserInfo {
+    private static class UserInfo {
         String email;
         String password;
     }
@@ -31,7 +31,7 @@ public class RegistrationController {
             if (userRepository.findByEmail(user_info.getEmail()) != null)
                 return "User already exists";
             else {
-                User new_user = new User();
+                ApplicationUser new_user = new ApplicationUser();
                 new_user.setEmail(user_info.getEmail());
                 new_user.updatePassword(user_info.getPassword());
 
@@ -41,10 +41,5 @@ public class RegistrationController {
         }
         else
             return "Bad";
-    }
-
-    @RequestMapping("/test")
-    public String index(){
-        return "I'm alive";
     }
 }
