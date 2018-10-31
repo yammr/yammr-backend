@@ -29,7 +29,7 @@ public class ApplicationUser {
     @Column(name="username")
     private String username;
 
-    @Column(name="is_moderator")
+    @Column(name="user_status")
     private byte moderator;
 
     @Column(name="fk_campus_id")
