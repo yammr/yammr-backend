@@ -1,20 +1,26 @@
 package com.gibgab.service.controller;
 
-import com.gibgab.service.database.ApplicationUser;
-import com.gibgab.service.database.UserRepository;
+import com.gibgab.service.database.entity.ApplicationUser;
+import com.gibgab.service.database.entity.VerificationToken;
+import com.gibgab.service.database.repository.UserRepository;
+import com.gibgab.service.database.repository.VerificationTokenRepository;
+import com.gibgab.service.security.verification.VerificationConstants;
+import com.gibgab.service.security.verification.VerificationTokenGenerator;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 @RestController
 public class RegistrationController {
 
     @Autowired
-    private Environment env;
+    private UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private VerificationTokenRepository verificationTokenRepository;
 
     @Data
     private static class UserInfo {
@@ -34,12 +40,26 @@ public class RegistrationController {
                 ApplicationUser new_user = new ApplicationUser();
                 new_user.setEmail(user_info.getEmail());
                 new_user.updatePassword(user_info.getPassword());
+                new_user.setRegistered(true);
+                new_user.setActive(true);
 
-                userRepository.save(new_user);
+                new_user = userRepository.save(new_user);
+
+                VerificationToken verificationToken = createToken(new_user);
+                verificationTokenRepository.save(verificationToken);
                 return "Created";
             }
         }
         else
             return "Bad";
+    }
+
+    private VerificationToken createToken(ApplicationUser new_user) {
+        VerificationToken verificationToken = new VerificationToken();
+        long now = (new Date()).getTime();
+        verificationToken.setExpirationTime(new Timestamp(now + VerificationConstants.tokenExpirationTime));
+        verificationToken.setUser(new_user.getId());
+        verificationToken.setVerificationToken(VerificationTokenGenerator.generateVerificationToken());
+        return verificationToken;
     }
 }
