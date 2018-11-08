@@ -5,6 +5,7 @@ import com.gibgab.service.database.entity.VerificationToken;
 import com.gibgab.service.database.repository.UserRepository;
 import com.gibgab.service.database.repository.VerificationTokenRepository;
 import com.gibgab.service.security.verification.VerificationConstants;
+import com.gibgab.service.security.verification.VerificationEmailSender;
 import com.gibgab.service.security.verification.VerificationTokenGenerator;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class RegistrationController {
 
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
+
+    @Autowired
+    private VerificationEmailSender verificationEmailSender;
 
     @Data
     private static class UserInfo {
@@ -46,7 +50,9 @@ public class RegistrationController {
                 new_user = userRepository.save(new_user);
 
                 VerificationToken verificationToken = createToken(new_user);
-                verificationTokenRepository.save(verificationToken);
+                verificationToken = verificationTokenRepository.save(verificationToken);
+
+                verificationEmailSender.sendVerificationMail(new_user.getEmail(), verificationToken.getVerificationToken());
                 return "Created";
             }
         }
