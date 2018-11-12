@@ -37,9 +37,9 @@ public class RegistrationController {
         if (user_info.getEmail().equals("") || user_info.getPassword().equals(""))
             return "Missing details";
 
-        if(user_info.getEmail().matches(".*@.*.edu")) {
+        if(user_info.getEmail().matches(".+@.+\\.edu")) {
             if (userRepository.findByEmail(user_info.getEmail()) != null)
-                return "User already exists";
+                return "Bad";
             else {
                 ApplicationUser new_user = new ApplicationUser();
                 new_user.setEmail(user_info.getEmail());

@@ -35,6 +35,8 @@ dependencies {
     compile 'mysql:mysql-connector-java'
     compile 'javax.mail:javax.mail-api:1.6.2'
     compile 'com.sun.mail:javax.mail:1.6.2'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile('org.springframework.security:spring-security-test')
 }
