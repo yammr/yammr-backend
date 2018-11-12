@@ -1,5 +1,6 @@
-package com.gibgab.service.database;
+package com.gibgab.service.database.repository;
 
+import com.gibgab.service.database.entity.ApplicationUser;
 import org.springframework.data.repository.CrudRepository;
 
 

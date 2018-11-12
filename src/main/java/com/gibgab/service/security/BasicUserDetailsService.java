@@ -1,7 +1,9 @@
 package com.gibgab.service.security;
 
-import com.gibgab.service.database.ApplicationUser;
-import com.gibgab.service.database.UserRepository;
+import com.gibgab.service.database.entity.ApplicationUser;
+import com.gibgab.service.database.repository.UserRepository;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +27,14 @@ public class BasicUserDetailsService implements UserDetailsService {
 
         if (applicationUser == null) {
             throw new UsernameNotFoundException(email);
+        }
+
+        if(!applicationUser.isActive()){
+            throw new DisabledException(email + " is not an active user.");
+        }
+
+        if(!applicationUser.isVerified()){
+            throw new LockedException(email + " is not verified.");
         }
 
         return new User(applicationUser.getEmail(), applicationUser.getPassword(), emptyList());
