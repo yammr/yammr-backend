@@ -1,7 +1,7 @@
 package com.gibgab.service.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibgab.service.database.ApplicationUser;
+import com.gibgab.service.database.entity.ApplicationUser;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
