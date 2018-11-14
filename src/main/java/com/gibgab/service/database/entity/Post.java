@@ -1,4 +1,4 @@
-package com.gibgab.service.database;
+package com.gibgab.service.database.entity;
 
 import javax.persistence.*;
 
@@ -22,8 +22,9 @@ public class Post {
     private String text;
 
     @Getter
+    @Setter
     @Column(name="author_name")
-    private String author_name;
+    private String authorName;
 
     @Getter
     @Setter
