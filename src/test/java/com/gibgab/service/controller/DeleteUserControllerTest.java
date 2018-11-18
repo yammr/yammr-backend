@@ -34,7 +34,7 @@ public class DeleteUserControllerTest {
     @Test
     @WithMockUser(username = username)
     public void deleteUserDeletesUser() throws Exception {
-        ApplicationUser applicationUser = new ApplicationUser();
+        ApplicationUser applicationUser = ApplicationUser.builder().build();
 
         when(userRepository.findByEmail(username)).thenReturn(applicationUser);
 
