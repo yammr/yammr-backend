@@ -26,7 +26,7 @@ public class FeedController {
     final int POSTS_PER_PAGE = 10;
 
     @GetMapping({"/feed"})
-    public @ResponseBody List<Post> get_feed(@PathVariable Optional<Integer> page) {
+    public @ResponseBody List<Post> get_feed() {
         return postRepository.findByOrderByIdDesc(PageRequest.of(0, POSTS_PER_PAGE));
     }
     
