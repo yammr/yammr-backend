@@ -27,6 +27,7 @@ public class ApplicationUser {
     @Column(name="password_hash")
     private String password;
 
+    @Getter
     @Column(name="username")
     private String username;
 
