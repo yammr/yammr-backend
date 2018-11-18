@@ -9,10 +9,23 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfiguration {
 
     @Value("#{'${pages.public.get}'.split(',')}")
-    public String[] publicAccessGetPages;
+    private String[] publicAccessGetPages;
 
     @Value("#{'${pages.public.post}'.split(',')}")
-    public String[] publicAccessPostPages;
+    private String[] publicAccessPostPages;
+
+    @Value("#{'${pages.secure.moderator}'.split(',')}")
+    private String[] moderatorPages;
+
+    @Value("#{'${pages.secure.user}'.split(',')}")
+    private String[] userPages;
+
+
+    @Value("#{'${security.role.moderator}'}")
+    private String moderatorRole;
+
+    @Value("#{'${security.role.user}'}")
+    private String userRole;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -27,5 +40,25 @@ public class SecurityConfiguration {
     @Bean
     public String[] publicAccessPostPages(){
         return publicAccessPostPages;
+    }
+
+    @Bean
+    public String[] moderatorPages(){
+        return moderatorPages;
+    }
+
+    @Bean
+    public String[] userPages(){
+        return userPages;
+    }
+
+    @Bean
+    public String moderatorRole(){
+        return moderatorRole;
+    }
+
+    @Bean
+    public String userRole(){
+        return userRole;
     }
 }

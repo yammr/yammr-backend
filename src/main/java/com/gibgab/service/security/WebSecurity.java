@@ -24,12 +24,23 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private String[] publicAccessGetPages;
     @Autowired
     private String[] publicAccessPostPages;
+    @Autowired
+    private String[] moderatorPages;
+    @Autowired
+    private String[] userPages;
+
+    @Autowired
+    private String moderatorRole;
+    @Autowired
+    private String userRole;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, publicAccessPostPages).permitAll()
                 .antMatchers(HttpMethod.GET, publicAccessGetPages).permitAll()
+                .antMatchers(moderatorPages).hasRole(moderatorRole)
+                .antMatchers(userPages).hasRole(userRole)
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))

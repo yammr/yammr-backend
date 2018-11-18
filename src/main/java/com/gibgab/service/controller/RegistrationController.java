@@ -41,8 +41,8 @@ public class RegistrationController {
             if (userRepository.findByEmail(user_info.getEmail()) != null)
                 return "Bad";
             else {
-                ApplicationUser new_user = new ApplicationUser();
-                new_user.setEmail(user_info.getEmail());
+                ApplicationUser new_user = ApplicationUser.builder()
+                        .email(user_info.getEmail()).build();
                 new_user.updatePassword(user_info.getPassword());
                 new_user.setRegistered(true);
                 new_user.setActive(true);
