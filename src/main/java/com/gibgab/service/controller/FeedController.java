@@ -23,15 +23,15 @@ public class FeedController {
     @Autowired
     private PostRepository postRepository;
 
-    final int POSTS_PER_PAGE = 10;
-
     @GetMapping({"/feed"})
     public @ResponseBody List<Post> get_feed() {
-        return postRepository.findByOrderByIdDesc(PageRequest.of(0, POSTS_PER_PAGE));
+        int pageLimit = Integer.parseInt(env.getRequiredProperty("feed.page-limit"));
+        return postRepository.findByOrderByIdDesc(PageRequest.of(0, pageLimit));
     }
     
     @GetMapping("/feed/{page}")
     public @ResponseBody List<Post> get_feed(@PathVariable int page) {
-        return postRepository.findByOrderByIdDesc(PageRequest.of(page, POSTS_PER_PAGE));
+        int pageLimit = Integer.parseInt(env.getRequiredProperty("feed.page-limit"));
+        return postRepository.findByOrderByIdDesc(PageRequest.of(page, pageLimit));
     }
 }
