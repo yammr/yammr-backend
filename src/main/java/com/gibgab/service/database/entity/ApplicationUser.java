@@ -7,9 +7,10 @@ import lombok.*;
 
 @Entity
 @Table(name="user")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ApplicationUser {
-
-    public ApplicationUser() {}
 
     @Getter
     @Id
@@ -70,19 +71,35 @@ public class ApplicationUser {
     }
 
     public void setActive(boolean state){
-        user_status |= (state ? 1 : 0);
+        if(state){
+            if(!isActive()) user_status += 1;
+        } else {
+            if(isActive()) user_status -= 1;
+        }
     }
 
     public void setRegistered(boolean state){
-        user_status |= (state ? 2 : 0);
+        if(state){
+            if(!isRegistered()) user_status += 2;
+        } else {
+            if(isRegistered()) user_status -= 2;
+        }
     }
 
     public void setVerified(boolean state){
-        user_status |= (state ? 4 : 0);
+        if(state){
+            if(!isVerified()) user_status += 4;
+        } else {
+            if(isVerified()) user_status -= 4;
+        }
     }
 
     public void setModerator(boolean state){
-        user_status |= (state ? 8 : 0);
+        if(state){
+            if(!isModerator()) user_status += 8;
+        } else {
+            if(isModerator()) user_status -= 8;
+        }
     }
 
 }

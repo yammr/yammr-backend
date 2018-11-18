@@ -42,7 +42,7 @@ public class VerificationControllerTest {
     public void validVerificationTokenVerifiesUser() throws Exception {
         String key = "Verification token";
         VerificationToken verificationToken = new VerificationToken();
-        ApplicationUser applicationUser = new ApplicationUser();
+        ApplicationUser applicationUser = ApplicationUser.builder().build();
 
         when(verificationTokenRepository.findByVerificationToken(key)).thenReturn(verificationToken);
         when(userRepository.findById(verificationToken.getId())).thenReturn(Optional.of(applicationUser));
