@@ -9,56 +9,26 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfiguration {
 
     @Value("#{'${pages.public.get}'.split(',')}")
-    private String[] publicAccessGetPages;
+    public String[] publicAccessGetPages;
 
     @Value("#{'${pages.public.post}'.split(',')}")
-    private String[] publicAccessPostPages;
+    public String[] publicAccessPostPages;
 
     @Value("#{'${pages.secure.moderator}'.split(',')}")
-    private String[] moderatorPages;
+    public String[] moderatorPages;
 
     @Value("#{'${pages.secure.user}'.split(',')}")
-    private String[] userPages;
+    public String[] userPages;
 
 
     @Value("#{'${security.role.moderator}'}")
-    private String moderatorRole;
+    public String moderatorRole;
 
     @Value("#{'${security.role.user}'}")
-    private String userRole;
+    public String userRole;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public String[] publicAccessGetPages(){
-        return publicAccessGetPages;
-    }
-
-    @Bean
-    public String[] publicAccessPostPages(){
-        return publicAccessPostPages;
-    }
-
-    @Bean
-    public String[] moderatorPages(){
-        return moderatorPages;
-    }
-
-    @Bean
-    public String[] userPages(){
-        return userPages;
-    }
-
-    @Bean
-    public String moderatorRole(){
-        return moderatorRole;
-    }
-
-    @Bean
-    public String userRole(){
-        return userRole;
     }
 }
