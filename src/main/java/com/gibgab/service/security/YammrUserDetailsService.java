@@ -1,10 +1,12 @@
 package com.gibgab.service.security;
 
+import com.gibgab.service.beans.SecurityConfiguration;
 import com.gibgab.service.database.entity.ApplicationUser;
 import com.gibgab.service.database.entity.BanEvent;
 import com.gibgab.service.database.repository.BanEventRepository;
 import com.gibgab.service.database.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,12 +25,11 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 
 @Service
+@Primary
 public class YammrUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private String userRole;
-    @Autowired
-    private String moderatorRole;
+    private SecurityConfiguration securityConfiguration;
 
     private UserRepository userRepository;
 
@@ -64,10 +65,10 @@ public class YammrUserDetailsService implements UserDetailsService {
 
         if(applicationUser.isActive()) {
             if(applicationUser.isVerified()){
-                privileges.add("ROLE_" + userRole);
+                privileges.add("ROLE_" + securityConfiguration.userRole);
             }
             if (applicationUser.isModerator()) {
-                privileges.add("ROLE_" + moderatorRole);
+                privileges.add("ROLE_" + securityConfiguration.moderatorRole);
             }
 
             List<GrantedAuthority> authorities = new ArrayList<>();
