@@ -28,10 +28,13 @@ public class FeedController {
     private int pageLimit;
 
     @GetMapping({"/feed"})
-    public @ResponseBody List<Post> get_feed() {
-        return postRepository.findByOrderByIdDesc(PageRequest.of(0, pageLimit));
+    public @ResponseBody List<Post> get_feed_from_index(@RequestParam("start") Optional<Integer> start_id) {
+        if ( start_id.isPresent() )
+            return postRepository.findByIdGreaterThanOrderByIdDesc(start_id.get(), PageRequest.of(0, pageLimit));
+        else
+            return postRepository.findByOrderByIdDesc(PageRequest.of(0, pageLimit));
     }
-    
+
     @GetMapping("/feed/{page}")
     public @ResponseBody List<Post> get_feed(@PathVariable int page) {
         return postRepository.findByOrderByIdDesc(PageRequest.of(page, pageLimit));
