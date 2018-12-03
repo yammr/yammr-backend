@@ -1,6 +1,7 @@
 package com.gibgab.service.controller;
 
 import com.gibgab.service.database.entity.ApplicationUser;
+import com.gibgab.service.database.entity.Comment;
 import com.gibgab.service.database.entity.Post;
 import com.gibgab.service.database.repository.PostRepository;
 import com.gibgab.service.database.repository.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 
 import java.security.Principal;
 import java.util.Optional;
+import java.util.List;
 
 @RestController
 public class PostController {
@@ -58,6 +60,15 @@ public class PostController {
         Optional<Post> post = postRepository.findById(post_id);
         if ( post.isPresent() )
             return post.get();
+
+        throw new PostNotFoundException();
+    }
+
+    @GetMapping("/post/{post_id}/comments")
+    public @ResponseBody List<Comment> get_comments(@PathVariable int post_id) {
+        Optional<Post> post = postRepository.findById(post_id);
+        if ( post.isPresent() )
+            return post.get().getComments();
 
         throw new PostNotFoundException();
     }

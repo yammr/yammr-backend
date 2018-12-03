@@ -4,18 +4,16 @@ import javax.persistence.*;
 
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Table(name="post")
-public class Post {
+public class Comment {
 
-    public Post() {}
+    public Comment() {}
 
     @Getter
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="pk_post_id")
+    @Column(name="pk_comment_id")
     private Integer id;
 
     @Getter
@@ -45,10 +43,11 @@ public class Post {
 
     @Getter
     @Setter
-    @Column(name="fk_campus_id")
-    private int campusId = 0;
+    @Column(name="fk_post_id")
+    private int postId = 0;
 
     @Getter
-    @OneToMany(mappedBy="postId")
-    private List<Comment> comments;
+    @Setter
+    @Column(name="score")
+    private int score = 0;
 }
