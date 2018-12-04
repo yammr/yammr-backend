@@ -61,4 +61,5 @@ public class PostController {
 
         throw new PostNotFoundException();
     }
+
 }
