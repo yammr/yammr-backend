@@ -49,6 +49,7 @@ public class Post {
     private int campusId = 0;
 
     @Getter
-    @OneToMany(mappedBy="postId")
+    @OneToMany
+    @JoinColumn(name="fk_post_id")
     private List<Comment> comments;
 }

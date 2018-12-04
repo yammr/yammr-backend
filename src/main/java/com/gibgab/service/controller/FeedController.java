@@ -1,6 +1,7 @@
 package com.gibgab.service.controller;
 
 import com.gibgab.service.database.entity.ApplicationUser;
+import com.gibgab.service.database.entity.Comment;
 import com.gibgab.service.database.entity.Post;
 import com.gibgab.service.database.repository.PostRepository;
 import com.gibgab.service.database.repository.UserRepository;
@@ -21,7 +22,8 @@ public class FeedController {
 
     @Data
     public static class CommentItem {
-
+        int commentId;
+        String text;
     }
 
     @Data
@@ -59,6 +61,18 @@ public class FeedController {
         return transformPosts(postRepository.findByOrderByIdDesc(PageRequest.of(page, pageLimit)));
     }
 
+    private List<CommentItem> transformComments(List<Comment> comments) {
+        List<CommentItem> feed = new ArrayList<CommentItem>(comments.size());
+        for ( Comment comment : comments ) {
+            CommentItem item = new CommentItem();
+            item.setText(comment.getText());
+            item.setCommentId(comment.getId());
+
+            feed.add(item);
+        }
+        return feed;
+    }
+
     private List<FeedItem> transformPosts(List<Post> posts) {
         List<FeedItem> feed = new ArrayList<FeedItem>(posts.size());
         for ( Post post : posts ) {
@@ -71,7 +85,7 @@ public class FeedController {
             item.setAuthorPictureUrl(null);
             item.setImageUrl(null);
             item.setReplyCount(0);
-            item.setComments(new ArrayList<CommentItem>());
+            item.setComments(transformComments(post.getComments()));
 
             feed.add(item);
         }
