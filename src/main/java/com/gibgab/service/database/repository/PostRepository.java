@@ -10,4 +10,5 @@ import java.util.List;
 public interface PostRepository extends CrudRepository<Post, Integer> {
     List<Post> findByOrderByIdDesc(Pageable page);
     List<Post> findByIdLessThanOrderByIdDesc(int id, Pageable page);
+    List<Post> findByAuthorIdOrderByIdDesc(int author_id);
 }

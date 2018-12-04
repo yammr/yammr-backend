@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
+import java.security.Principal;
 import java.util.Optional;
 import java.util.List;
 
@@ -42,6 +43,9 @@ public class FeedController {
 
     @Autowired
     private PostRepository postRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
 
     @Value("#{'${feed.page-limit}'}")
     private int pageLimit;
@@ -57,6 +61,12 @@ public class FeedController {
     @GetMapping("/feed/{page}")
     public @ResponseBody List<FeedItem> get_feed(@PathVariable int page) {
         return transformPosts(postRepository.findByOrderByIdDesc(PageRequest.of(page, pageLimit)));
+    }
+
+    @GetMapping("/feed/me")
+    public @ResponseBody List<FeedItem> get_my_posts(Principal principal) {
+        ApplicationUser user = userRepository.findByEmail(principal.getName());
+        return transformPosts(postRepository.findByAuthorIdOrderByIdDesc(user.getId()));
     }
 
     private List<FeedItem> transformPosts(List<Post> posts) {
