@@ -2,6 +2,23 @@
 
 An anonymous social platform for posting text, pictures, and "vine-style" videos, exclusively for college students. This repository houses the Spring Boot back-end that serves the front-end. 
 
+### Flag Post
+
+Users may flag a post for review if they feel the post does not meet Yammr's community guidelines.  Flagged posts may be reviewed by moderators or deleted entirely.
+
+
+##### Endpoint: `/post/flag`
+##### Endpoint type: `POST`
+##### Expected body:
+``` 
+{
+    postId : <post id>
+}
+```
+##### Results
+* Status `200 OK`: Post has been flagged by the user
+
+
 ## Getting Started
 
 TODO
