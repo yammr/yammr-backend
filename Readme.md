@@ -2,6 +2,86 @@
 
 An anonymous social platform for posting text, pictures, and "vine-style" videos, exclusively for college students. This repository houses the Spring Boot back-end that serves the front-end. 
 
+## REST API
+
+The API is accessible via [gibgab.us-east-1.elasticbeanstalk.com](http://gibgab.us-east-1.elasticbeanstalk.com)
+
+### Register
+
+A user may register themselves at [`/register`](http://gibgab.us-east-1.elasticbeanstalk.com/).
+
+On successful registration, the user will be sent a verification email to validate their account.  The user will not be able to use Yammr until they have completed the verification process.
+
+##### Endpoint: `/register`
+##### Endpoint type: `POST`
+##### Expected body:
+``` 
+{
+    email : <user_email>
+    password : <user_password>
+}
+```
+##### Results:
+* `Created`: The account was created, and the verification email has been sent
+* `500 Internal Server Error`, `message: Could not send email through SES`: The account was created, but there was a problem sending the email to the given email.
+
+### Login
+
+A user may log in at [`/login`](http://gibgab.us-east-1.elasticbeanstalk.com/login).
+
+If the user has verified their email then they will be able to log in with their credentials.  The user must include the returned JWT in every authorized API call.
+
+##### Endpoint: `/login`
+##### Endpoint type: `POST`
+##### Expected body:
+``` 
+{
+    email : <user_email>
+    password : <user_password>
+}
+```
+##### Results (applicable):
+* `200 Ok`, `Authorization : "Bearer <jwt_token>"`: the user is logged in and they may use `<jwt_token>` to access authorized endpoints.
+* `403 Forbidden`: The user was not logged in.  Either the account does not exist or its email has not been verified.
+
+### Verify
+
+The user will be sent an email upon successful registration.  The email will include a link containing their verification token.  Once they go to this link, the user's account is unblocked and they may access the rest of Yammr.
+
+##### Endpoint: `/verify`
+##### Endpoint type: `GET`
+##### Expected Parameters:
+``` key=<verification key> ```
+##### Results:
+* Success page: The account has been verified.
+* 'Oops' page: The verification token is invalid in some way.
+
+### Delete My Account
+
+A user may delete their account by visiting `/user/delete`.  
+
+***THERE IS NO CONFIRMATION! THE USER WILL BE PERMANENTLY DELETED!***
+
+##### Endpoint: `/user/delete`
+##### Endpoint type: `POST, GET`
+
+### Ban a User
+
+Moderators may ban users.  When a user is banned, they are unable to access authorized endpoints until their ban expires.
+
+The user will be unable to successfully log in until their ban expires.  The user must log in successfully after their ban expires to receive a new, valid JWT.  
+
+##### Endpoint: `/moderator/ban_user`
+##### Endpoint type: `POST`
+##### Expected body:
+``` 
+{
+    emailToBan : <user_email>
+    banStart : <ban start time>
+    bannedUntil : <ban expiration>
+}
+```
+
 ## Getting Started
 
 TODO
