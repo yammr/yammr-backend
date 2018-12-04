@@ -34,7 +34,11 @@ public class FlagPostController {
         String email = principal.getName();
         ApplicationUser flaggingUser = userRepository.findByEmail(email);
 
-        PostFlag postFlag = PostFlag.builder().postId(flagInfo.postId).flag_author(flaggingUser.getId()).build();
+        if(postFlagRepository.findByFlagAuthorAndPostId(flaggingUser.getId(), flagInfo.postId) != null) {
+            return new ResponseEntity<>("Post already flagged by this user", HttpStatus.BAD_REQUEST);
+        }
+
+        PostFlag postFlag = PostFlag.builder().postId(flagInfo.postId).flagAuthor(flaggingUser.getId()).build();
         postFlag.setIsFlag();
 
         postFlagRepository.save(postFlag);

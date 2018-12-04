@@ -25,7 +25,7 @@ public class PostFlag {
     @Getter
     @Setter
     @Column(name = "fk_author_id")
-    private Integer flag_author;
+    private Integer flagAuthor;
 
     @Getter
     @Setter
