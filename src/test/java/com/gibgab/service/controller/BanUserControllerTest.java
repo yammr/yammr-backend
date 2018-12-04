@@ -10,6 +10,7 @@ import lombok.Data;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -73,14 +75,14 @@ public class BanUserControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        BanEvent expectedBanEvent = BanEvent.builder()
-                .bannedId(bannedUser.getId())
-                .bannerId(banner.getId())
-                .startTime(banEnd)
-                .endTime(banEnd).build();
-
-        verify(banEventRepository).save(expectedBanEvent);
+        ArgumentCaptor<BanEvent> banEventMatcher = ArgumentCaptor.forClass(BanEvent.class);
+        verify(banEventRepository).save(banEventMatcher.capture());
         verify(bannedUser).setActive(false);
+
+        assertEquals(bannedUser.getId(), banEventMatcher.getValue().getBannedId());
+        assertEquals(banner.getId(), banEventMatcher.getValue().getBannerId());
+        assertEquals(banStart, banEventMatcher.getValue().getStartTime());
+        assertEquals(banEnd, banEventMatcher.getValue().getEndTime());
     }
 
     @Test
