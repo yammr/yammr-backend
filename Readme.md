@@ -86,6 +86,7 @@ The user will be unable to successfully log in until their ban expires.  The use
 
 Users may flag a post for review if they feel the post does not meet Yammr's community guidelines.  Flagged posts may be reviewed by moderators or deleted entirely.
 
+If the post received too many flags then the AutoModerator will delete this post automagically.
 ##### Endpoint: `/post/flag`
 ##### Endpoint type: `POST`
 ##### Expected body:

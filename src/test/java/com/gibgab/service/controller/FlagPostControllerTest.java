@@ -1,9 +1,11 @@
 package com.gibgab.service.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gibgab.service.beans.AutoModeratorConfiguration;
 import com.gibgab.service.database.entity.ApplicationUser;
 import com.gibgab.service.database.entity.PostFlag;
 import com.gibgab.service.database.repository.PostFlagRepository;
+import com.gibgab.service.database.repository.PostRepository;
 import com.gibgab.service.database.repository.UserRepository;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,6 +41,12 @@ public class FlagPostControllerTest {
     private PostFlagRepository postFlagRepository;
     @MockBean
     private UserRepository userRepository;
+    @MockBean
+    private PostRepository postRepository;
+    @MockBean
+    private AutoModeratorConfiguration autoModeratorConfiguration;
+
+    private int maxFlagsPerPost = 5;
 
     private final int POST_ID = 5;
     private final String FLAGGING_EMAIL = "email@email.edu";
@@ -52,7 +60,8 @@ public class FlagPostControllerTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        when(autoModeratorConfiguration.getMaxFlagsPerPost()).thenReturn(maxFlagsPerPost);
         when(userRepository.findByEmail(FLAGGING_EMAIL)).thenReturn(flaggingUser);
     }
 
@@ -97,6 +106,27 @@ public class FlagPostControllerTest {
 
         verify(postFlagRepository).findByFlagAuthorAndPostId(flaggingUser.getId(),POST_ID);
         verifyNoMoreInteractions(postFlagRepository);
+    }
+
+    @Test
+    @WithMockUser(username = FLAGGING_EMAIL)
+    public void flagPostWithTooManyFlagsDeletesPost() throws Exception {
+
+        FlagPostParameters flagPostParameters = new FlagPostParameters();
+        flagPostParameters.setPostId(POST_ID);
+
+        when(postFlagRepository.countByPostId(POST_ID)).thenReturn((long)maxFlagsPerPost+1);
+
+        mockMvc.perform(post(url)
+                .with(csrf())
+                .content(asJsonString(flagPostParameters))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        verify(postFlagRepository).countByPostId(POST_ID);
+
+        verify(postRepository).deleteById(POST_ID);
     }
 
     private String asJsonString(final Object object){

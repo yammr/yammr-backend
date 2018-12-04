@@ -1,8 +1,10 @@
 package com.gibgab.service.controller;
 
+import com.gibgab.service.beans.AutoModeratorConfiguration;
 import com.gibgab.service.database.entity.ApplicationUser;
 import com.gibgab.service.database.entity.PostFlag;
 import com.gibgab.service.database.repository.PostFlagRepository;
+import com.gibgab.service.database.repository.PostRepository;
 import com.gibgab.service.database.repository.UserRepository;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,6 +24,10 @@ public class FlagPostController {
     private UserRepository userRepository;
     @Autowired
     private PostFlagRepository postFlagRepository;
+    @Autowired
+    private PostRepository postRepository;
+    @Autowired
+    private AutoModeratorConfiguration autoModeratorConfiguration;
 
     @Data
     @EqualsAndHashCode
@@ -42,6 +48,9 @@ public class FlagPostController {
         postFlag.setIsFlag();
 
         postFlagRepository.save(postFlag);
+
+        if(postFlagRepository.countByPostId(flagInfo.postId) > autoModeratorConfiguration.getMaxFlagsPerPost())
+            postRepository.deleteById(flagInfo.postId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
