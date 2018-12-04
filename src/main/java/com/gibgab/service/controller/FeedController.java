@@ -49,7 +49,7 @@ public class FeedController {
     @GetMapping({"/feed"})
     public @ResponseBody List<FeedItem> get_feed_from_index(@RequestParam("start") Optional<Integer> start_id) {
         if ( start_id.isPresent() )
-            return transformPosts(postRepository.findByIdGreaterThanOrderByIdDesc(start_id.get(), PageRequest.of(0, pageLimit)));
+            return transformPosts(postRepository.findByIdLessThanOrderByIdDesc(start_id.get(), PageRequest.of(0, pageLimit)));
         else
             return transformPosts(postRepository.findByOrderByIdDesc(PageRequest.of(0, pageLimit)));
     }
