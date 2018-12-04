@@ -82,6 +82,24 @@ The user will be unable to successfully log in until their ban expires.  The use
 }
 ```
 
+### Flag Post
+
+Users may flag a post for review if they feel the post does not meet Yammr's community guidelines.  Flagged posts may be reviewed by moderators or deleted entirely.
+
+If the post received too many flags then the AutoModerator will delete this post automagically.
+##### Endpoint: `/post/flag`
+##### Endpoint type: `POST`
+##### Expected body:
+``` 
+{
+    postId : <post id>
+}
+```
+##### Results
+* Status `200 OK`: Post has been flagged by the user
+* Status `400 'Post already flagged by this user'`: Post has already been flagged by this user
+
+
 ## Getting Started
 
 TODO
