@@ -14,11 +14,11 @@ pipeline {
                 sh './gradlew build'
             }
         }
-/*        stage('Test') {
+        stage('Test') {
             steps {
                 sh './gradlew test'
             }
-        }*/
+        }
 
         stage('Deploy') {
             when {
