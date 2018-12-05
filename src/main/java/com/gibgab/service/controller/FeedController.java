@@ -28,7 +28,7 @@ public class FeedController {
     @Data
     public static class FeedItem {
         int postId;
-        Timestamp time;
+        Timestamp postTime;
         String text;
         int score;
         String voteType;
@@ -75,7 +75,7 @@ public class FeedController {
         for ( Post post : posts ) {
             FeedItem item = new FeedItem();
             item.setPostId(post.getId());
-            item.setTime(post.getDate());
+            item.setPostTime(post.getDate());
             item.setText(post.getText());
             item.setScore(0);
             item.setVoteType(null);

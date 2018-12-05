@@ -104,7 +104,7 @@ The user will be unable to successfully log in until their ban expires.  The use
 [
     {
         "postId": <post id>,
-        "time": <YYYY-MM-DDThh:mm:ss.SSS+0000>,
+        "postTime": <YYYY-MM-DDThh:mm:ss.SSS+0000>,
         "text": <text>,
         "score": <score>,
         "voteType": null,
