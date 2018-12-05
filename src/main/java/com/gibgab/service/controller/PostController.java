@@ -50,7 +50,7 @@ public class PostController {
         post.setAuthorId(user.getId());
         post.setAuthorName(user.getUsername());
         post.setText(post_info.text);
-        post.setScore((int)Math.random()*20);
+        post.setScore(0);
         post.setDate(new Timestamp((new Date()).getTime()));
 
         postRepository.save(post);
