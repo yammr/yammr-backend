@@ -96,7 +96,34 @@ The user will be unable to successfully log in until their ban expires.  The use
 
 ### Get Feed
 
-##### Endpoint: `/feed`
+##### Endpoint: `/feed`, `/feed/{page#}`
+##### Endpoint type: `GET`
+##### Expected parameters: `none`
+##### Optional query parameters:
+- `start` - The post ID to start from in the returned feed, exclusive 
+##### Results:
+```
+[
+    {
+        "postId": <post id>,
+        "time": <YYYY-MM-DDThh:mm:ss.SSS+0000>,
+        "text": <text>,
+        "score": <score>,
+        "voteType": null,
+        "authorName": null,
+        "authorPictureUrl": null,
+        "imageUrl": null,
+        "replyCount": 0,
+        "comments": []
+    }
+]
+```
+
+### My Feed
+
+Returns a feed of the current user's posts
+
+##### Endpoint: `/feed/me`
 ##### Endpoint type: `GET`
 ##### Expected parameters: `none`
 ##### Results:
