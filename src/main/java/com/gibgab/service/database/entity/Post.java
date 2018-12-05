@@ -1,8 +1,10 @@
 package com.gibgab.service.database.entity;
 
-import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.*;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name="post")
@@ -45,4 +47,9 @@ public class Post {
     @Setter
     @Column(name="fk_campus_id")
     private int campusId = 0;
+
+    @Getter
+    @Setter
+    @Column(name="date")
+    private Timestamp date;
 }

@@ -4,18 +4,18 @@ import com.gibgab.service.database.entity.ApplicationUser;
 import com.gibgab.service.database.entity.Post;
 import com.gibgab.service.database.repository.PostRepository;
 import com.gibgab.service.database.repository.UserRepository;
-import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
 
-import java.util.ArrayList;
 import java.security.Principal;
-import java.util.Optional;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class FeedController {
@@ -28,6 +28,7 @@ public class FeedController {
     @Data
     public static class FeedItem {
         int postId;
+        Timestamp time;
         String text;
         int score;
         String voteType;
@@ -74,6 +75,7 @@ public class FeedController {
         for ( Post post : posts ) {
             FeedItem item = new FeedItem();
             item.setPostId(post.getId());
+            item.setTime(post.getDate());
             item.setText(post.getText());
             item.setScore(0);
             item.setVoteType(null);

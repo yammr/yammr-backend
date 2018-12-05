@@ -81,6 +81,41 @@ The user will be unable to successfully log in until their ban expires.  The use
     bannedUntil : <ban expiration>
 }
 ```
+### Make Post
+
+##### Endpoint: `/post`
+##### Endpoint type: `POST`
+##### Expected body:
+```
+{
+    text : <text>
+}
+```
+##### Results
+* Status `200 <post data>`: Post has been made
+
+### Get Feed
+
+##### Endpoint: `/feed`
+##### Endpoint type: `GET`
+##### Expected parameters: `none`
+##### Results:
+```
+[
+    {
+        "postId": <post id>,
+        "time": <YYYY-MM-DDThh:mm:ss.SSS+0000>,
+        "text": <text>,
+        "score": <score>,
+        "voteType": null,
+        "authorName": null,
+        "authorPictureUrl": null,
+        "imageUrl": null,
+        "replyCount": 0,
+        "comments": []
+    }
+]
+```
 
 ### Flag Post
 

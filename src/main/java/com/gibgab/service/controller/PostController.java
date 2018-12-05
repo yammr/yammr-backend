@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -48,6 +50,7 @@ public class PostController {
         post.setAuthorId(user.getId());
         post.setAuthorName(user.getUsername());
         post.setText(post_info.text);
+        post.setDate(new Timestamp((new Date()).getTime()));
 
         postRepository.save(post);
         return post;
