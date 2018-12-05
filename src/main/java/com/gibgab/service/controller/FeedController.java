@@ -77,7 +77,7 @@ public class FeedController {
             item.setPostId(post.getId());
             item.setPostTime(post.getDate());
             item.setText(post.getText());
-            item.setScore(0);
+            item.setScore(post.getScore());
             item.setVoteType(null);
             item.setAuthorName(post.getAuthorName());
             item.setAuthorPictureUrl(null);

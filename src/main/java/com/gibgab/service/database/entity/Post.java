@@ -50,6 +50,11 @@ public class Post {
 
     @Getter
     @Setter
+    @Column(name="score")
+    private int score;
+
+    @Getter
+    @Setter
     @Column(name="date")
     private Timestamp date;
 }
