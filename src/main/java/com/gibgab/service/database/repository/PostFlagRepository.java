@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PostFlagRepository  extends CrudRepository<PostFlag, Integer> {
     long countByPostId(Integer postId);
-    PostFlag findByFlagAuthorAndPostId(Integer flagAuthor, Integer postId);
+    PostFlag findByFlagAuthorAndPostIdAndVote(Integer flagAuthor, Integer postId, byte vote);
 }

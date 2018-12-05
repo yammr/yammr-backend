@@ -21,6 +21,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.gibgab.service.database.entity.PostFlag.FLAG_VOTE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -94,7 +95,7 @@ public class FlagPostControllerTest {
         flagPostParameters.setPostId(POST_ID);
 
         PostFlag pastPostFlag = mock(PostFlag.class);
-        when(postFlagRepository.findByFlagAuthorAndPostId(flaggingUser.getId(), POST_ID)).thenReturn(pastPostFlag);
+        when(postFlagRepository.findByFlagAuthorAndPostIdAndVote(flaggingUser.getId(), POST_ID, FLAG_VOTE)).thenReturn(pastPostFlag);
 
         mockMvc.perform(post(url)
                 .with(csrf())
@@ -104,7 +105,7 @@ public class FlagPostControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Post already flagged by this user"));
 
-        verify(postFlagRepository).findByFlagAuthorAndPostId(flaggingUser.getId(),POST_ID);
+        verify(postFlagRepository).findByFlagAuthorAndPostIdAndVote(flaggingUser.getId(),POST_ID, FLAG_VOTE);
         verifyNoMoreInteractions(postFlagRepository);
     }
 

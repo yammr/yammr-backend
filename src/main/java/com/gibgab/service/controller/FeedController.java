@@ -3,6 +3,7 @@ package com.gibgab.service.controller;
 import com.gibgab.service.database.entity.ApplicationUser;
 import com.gibgab.service.database.entity.Post;
 import com.gibgab.service.database.repository.PostRepository;
+import com.gibgab.service.database.repository.PostVoteRepository;
 import com.gibgab.service.database.repository.UserRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.gibgab.service.database.entity.PostVote.DOWN_VOTE;
+import static com.gibgab.service.database.entity.PostVote.UP_VOTE;
+
 @RestController
 public class FeedController {
+
+    @Autowired
+    private PostVoteRepository postVoteRepository;
 
     @Data
     public static class CommentItem {
@@ -77,7 +84,10 @@ public class FeedController {
             item.setPostId(post.getId());
             item.setTime(post.getDate());
             item.setText(post.getText());
-            item.setScore(0);
+            long upVotes = postVoteRepository.countByPostIdAndVote(post.getId(), UP_VOTE);
+            long downVotes = postVoteRepository.countByPostIdAndVote(post.getId(), DOWN_VOTE);
+            long voteSum = upVotes - downVotes;
+            item.setScore((int)voteSum);
             item.setVoteType(null);
             item.setAuthorName(post.getAuthorName());
             item.setAuthorPictureUrl(null);

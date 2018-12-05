@@ -40,7 +40,7 @@ public class FlagPostController {
         String email = principal.getName();
         ApplicationUser flaggingUser = userRepository.findByEmail(email);
 
-        if(postFlagRepository.findByFlagAuthorAndPostId(flaggingUser.getId(), flagInfo.postId) != null) {
+        if(postFlagRepository.findByFlagAuthorAndPostIdAndVote(flaggingUser.getId(), flagInfo.postId, (byte)0x3) != null) {
             return new ResponseEntity<>("Post already flagged by this user", HttpStatus.BAD_REQUEST);
         }
 

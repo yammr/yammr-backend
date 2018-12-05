@@ -10,9 +10,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "post_vote")
-public class PostFlag {
+public class PostVote {
 
-    public static final byte FLAG_VOTE = (byte)0x3;
+    public static final byte UP_VOTE = (byte)0x1;
+    public static final byte DOWN_VOTE = (byte)0x0;
 
     @Id
     @Getter
@@ -27,18 +28,26 @@ public class PostFlag {
     @Getter
     @Setter
     @Column(name = "fk_author_id")
-    private Integer flagAuthor;
+    private Integer voteAuthor;
 
     @Getter
     @Setter
     @Column(name = "fk_post_id")
     private Integer postId;
 
-    public void setIsFlag(){
-        vote = 0x3;
+    public void setIsUpVote(){
+        vote = 0x1;
     }
 
-    public boolean getIsFlag(){
-        return (vote & 0x3) == 0x3;
+    public void setIsDownVote(){
+        vote = 0x0;
+    }
+
+    public boolean getIsUpVote(){
+        return (vote & 0x1) == 0x1;
+    }
+
+    public boolean getIsDownVote(){
+        return (vote) == 0x0;
     }
 }
